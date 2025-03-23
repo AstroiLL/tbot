@@ -1,9 +1,14 @@
 import sys
 import logging
+import os
+from dotenv import load_dotenv
 
 
 from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
+
+# Load environment variables from .env file
+load_dotenv()
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -113,8 +118,14 @@ def button_tap(update: Update, context: CallbackContext) -> None:
 
 
 def main() -> None:
+    # Get token from environment variable
+    token = os.getenv('TELEGRAM_BOT_TOKEN')
+    if not token:
+        logger.error("TELEGRAM_BOT_TOKEN not found in environment variables")
+        return
+
     # Create the Updater and pass it your bot's token
-    updater = Updater("8153917489:AAGenhYGhvF2vdOtuUZ3jc89lwjj0hQ0fRQ")
+    updater = Updater(token)
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher

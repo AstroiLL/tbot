@@ -1,6 +1,6 @@
 # tBot
 
-A simple tutorial bot for Telegram that demonstrates basic functionality.
+A simple bot for Telegram that have basic functionality.
 
 ## Features
 
@@ -21,10 +21,10 @@ A simple tutorial bot for Telegram that demonstrates basic functionality.
 2. Create a virtual environment:
 
 ```bash
-python -m venv new_venv
-source new_venv/bin/activate  # On Linux/Mac
+python -m venv .venv
+source .venv/bin/activate  # On Linux/Mac
 # or
-new_venv\Scripts\activate.bat  # On Windows
+.venv\Scripts\activate.bat  # On Windows
 ```
 
 3. Install the required packages:
@@ -37,7 +37,7 @@ pip install python-telegram-bot==13.7
 
 1. Create a new bot using [@BotFather](https://t.me/botfather) on Telegram
 2. Get your bot token
-3. Open the `TutorialBot.py` file and replace `"<YOUR_BOT_TOKEN>"` with your actual bot token
+3. Open the `tBot.py` file and replace `"<YOUR_BOT_TOKEN>"` with your actual bot token
 
 ## Running the Bot
 

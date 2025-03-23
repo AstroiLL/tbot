@@ -1,6 +1,6 @@
 # tBot
 
-A simple bot for Telegram that have basic functionality.
+A simple Telegram bot with basic functionality.
 
 ## Features
 
@@ -11,15 +11,21 @@ A simple bot for Telegram that have basic functionality.
 
 ## Prerequisites
 
-- Python 3.10
+- Python 3.10 or higher
 - python-telegram-bot library (version 13.7)
+- python-dotenv for environment variable management
 - A Telegram bot token (obtained from [@BotFather](https://t.me/botfather))
 
 ## Installation
 
-1. Ensure you have Python installed on your system
-2. Create a virtual environment:
+1. Ensure you have Python 3.10+ installed on your system
+2. Clone this repository:
+```bash
+git clone https://github.com/yourusername/tbot.git
+cd tbot
+```
 
+3. Create a virtual environment:
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # On Linux/Mac
@@ -27,17 +33,21 @@ source .venv/bin/activate  # On Linux/Mac
 .venv\Scripts\activate.bat  # On Windows
 ```
 
-3. Install the required packages:
-
+4. Install the required packages:
 ```bash
-pip install python-telegram-bot==13.7
+pip install -e .
+# or manually install dependencies:
+pip install python-telegram-bot==13.7 python-dotenv
 ```
 
-## Setup
+## Configuration
 
 1. Create a new bot using [@BotFather](https://t.me/botfather) on Telegram
 2. Get your bot token
-3. Open the `tBot.py` file and replace `"<YOUR_BOT_TOKEN>"` with your actual bot token
+3. Set up your environment variables by creating/editing the `.env` file:
+```
+TELEGRAM_BOT_TOKEN=your_token_here
+```
 
 ## Running the Bot
 
@@ -56,6 +66,20 @@ python tBot.py
 - When in normal mode, the bot will copy any messages you send to it
 - When in SCREAM mode, the bot will echo your messages in ALL CAPS
 - The `/menu` command displays interactive inline buttons that navigate between two menus
+- The second menu includes a tutorial button that links to the Telegram Bot API documentation
+
+## Project Structure
+
+- `tBot.py` - Main bot code
+- `.env` - Environment variables file (contains your bot token)
+- `pyproject.toml` - Project dependencies and metadata
+- `.gitignore` - Files to ignore in git repository
+- `.python-version` - Python version specification
+
+## Development
+
+This project uses a simple structure with all functionality in a single file. For larger bots, 
+consider organizing features into separate modules.
 
 ## License
 

@@ -1,12 +1,6 @@
 import sys
 import logging
 
-# Fix for Python 3.13 where imghdr was removed from the standard library
-# class ImghdrFakeModule:
-#     def what(self, *args, **kwargs):
-#         return None
-
-# sys.modules['imghdr'] = ImghdrFakeModule()
 
 from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler

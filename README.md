@@ -1,4 +1,4 @@
-# Telegram Tutorial Bot
+# tBot
 
 A simple tutorial bot for Telegram that demonstrates basic functionality.
 
@@ -42,9 +42,6 @@ python TutorialBot.py
 - `/whisper` - Deactivates SCREAM mode
 - `/menu` - Shows an interactive menu with inline buttons
 
-## Notes for Python 3.13+ Users
-
-If you're running Python 3.13 or newer, you might encounter an issue with the `imghdr` module which was removed from the standard library. The workaround provided in this repository (the custom `imghdr.py` file) addresses this issue.
 
 ## License
 

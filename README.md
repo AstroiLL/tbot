@@ -18,22 +18,31 @@ A simple tutorial bot for Telegram that demonstrates basic functionality.
 ## Installation
 
 1. Ensure you have Python installed on your system
-2. Install the required packages:
+2. Create a virtual environment:
 
 ```bash
-pip install python-telegram-bot==13.13 urllib3 six
+python -m venv new_venv
+source new_venv/bin/activate  # On Linux/Mac
+# or
+new_venv\Scripts\activate.bat  # On Windows
+```
+
+3. Install the required packages:
+
+```bash
+pip install python-telegram-bot==13.7
 ```
 
 ## Setup
 
 1. Create a new bot using [@BotFather](https://t.me/botfather) on Telegram
 2. Get your bot token
-3. Open the `TutorialBot.py` file and replace `"YOUR_BOT_TOKEN"` with your actual bot token
+3. Open the `TutorialBot.py` file and replace `"<YOUR_BOT_TOKEN>"` with your actual bot token
 
 ## Running the Bot
 
 ```bash
-python TutorialBot.py
+python tBot.py
 ```
 
 ## Commands
@@ -42,6 +51,11 @@ python TutorialBot.py
 - `/whisper` - Deactivates SCREAM mode
 - `/menu` - Shows an interactive menu with inline buttons
 
+## Bot Behavior
+
+- When in normal mode, the bot will copy any messages you send to it
+- When in SCREAM mode, the bot will echo your messages in ALL CAPS
+- The `/menu` command displays interactive inline buttons that navigate between two menus
 
 ## License
 

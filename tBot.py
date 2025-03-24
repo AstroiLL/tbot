@@ -3,17 +3,27 @@ import logging
 import os
 from dotenv import load_dotenv
 
-
-from telegram import Update, ForceReply, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, CallbackQueryHandler
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.constants import ParseMode
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    MessageHandler,
+    CallbackQueryHandler,
+    ContextTypes,
+    filters
+)
 
 # Load environment variables from .env file
 load_dotenv()
 
+# Enable logging
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
+# set higher logging level for httpx to avoid all GET and POST requests being logged
+logging.getLogger("httpx").setLevel(logging.WARNING)
+
 logger = logging.getLogger(__name__)
 
 # Store bot screaming status
@@ -38,16 +48,15 @@ SECOND_MENU_MARKUP = InlineKeyboardMarkup([
 ])
 
 
-def echo(update: Update, context: CallbackContext) -> None:
+async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     This function would be added to the dispatcher as a handler for messages coming from the Bot API
     """
-
     # Print to console
     print(f'{update.message.from_user.first_name} wrote {update.message.text}')
 
     if screaming and update.message.text:
-        context.bot.send_message(
+        await context.bot.send_message(
             update.message.chat_id,
             update.message.text.upper(),
             # To preserve the markdown, we attach entities (bold, italic...)
@@ -55,35 +64,32 @@ def echo(update: Update, context: CallbackContext) -> None:
         )
     else:
         # This is equivalent to forwarding, without the sender's name
-        update.message.copy(update.message.chat_id)
+        await update.message.copy(update.message.chat_id)
 
 
-def scream(update: Update, context: CallbackContext) -> None:
+async def scream(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     This function handles the /scream command
     """
-
     global screaming
     screaming = True
     print("Scream mode enabled")
 
 
-def whisper(update: Update, context: CallbackContext) -> None:
+async def whisper(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     This function handles /whisper command
     """
-
     global screaming
     screaming = False
     print("Scream mode disabled")
 
 
-def menu(update: Update, context: CallbackContext) -> None:
+async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     This handler sends a menu with the inline buttons we pre-assigned above
     """
-
-    context.bot.send_message(
+    await context.bot.send_message(
         update.message.from_user.id,
         FIRST_MENU,
         parse_mode=ParseMode.HTML,
@@ -91,11 +97,11 @@ def menu(update: Update, context: CallbackContext) -> None:
     )
     print("Menu sent")
 
-def button_tap(update: Update, context: CallbackContext) -> None:
+
+async def button_tap(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     This handler processes the inline buttons on the menu
     """
-
     query = update.callback_query
     data = query.data
     text = ''
@@ -109,33 +115,32 @@ def button_tap(update: Update, context: CallbackContext) -> None:
         markup = FIRST_MENU_MARKUP
 
     # Close the query to end the client-side loading animation
-    query.answer()
+    await query.answer()
 
     # Update message content with corresponding menu section
-    query.edit_message_text(
+    await query.edit_message_text(
         text,
         parse_mode=ParseMode.HTML,
         reply_markup=markup
     )
     print(f"Button {data} tapped")
 
+
 def main() -> None:
+    """Start the bot."""
     # Get token from environment variable
     token = os.getenv('TELEGRAM_BOT_TOKEN')
     if not token:
         logger.error("TELEGRAM_BOT_TOKEN not found in environment variables")
         return
 
-    # Create the Updater and pass it your bot's token
-    updater = Updater(token)
-
-    # Get the dispatcher to register handlers
-    dispatcher = updater.dispatcher
+    # Create the Application and pass it your bot's token
+    application = Application.builder().token(token).build()
 
     # Register commands
-    dispatcher.add_handler(CommandHandler("scream", scream))
-    dispatcher.add_handler(CommandHandler("whisper", whisper))
-    dispatcher.add_handler(CommandHandler("menu", menu))
+    application.add_handler(CommandHandler("scream", scream))
+    application.add_handler(CommandHandler("whisper", whisper))
+    application.add_handler(CommandHandler("menu", menu))
 
     # Set commands in Telegram
     commands = [
@@ -143,19 +148,16 @@ def main() -> None:
         ('whisper', 'Disable screaming mode'),
         ('menu', 'Show the menu')
     ]
-    updater.bot.set_my_commands(commands)
+    application.bot.set_my_commands(commands)
 
     # Register handler for inline buttons
-    dispatcher.add_handler(CallbackQueryHandler(button_tap))
+    application.add_handler(CallbackQueryHandler(button_tap))
 
     # Echo any message that is not a command
-    dispatcher.add_handler(MessageHandler(~Filters.command, echo))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
 
-    # Start the Bot
-    updater.start_polling()
-
-    # Run the bot until you press Ctrl-C
-    updater.idle()
+    # Run the bot until the user presses Ctrl-C
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
 if __name__ == '__main__':

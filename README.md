@@ -7,24 +7,27 @@ A collection of Telegram bots with basic functionality.
 ### Main Bot (tBot.py)
 - Echo messages back to the user
 - SCREAM mode (converts all messages to uppercase)
-- Interactive inline buttons menu
-- Simple command handling
-
-### Simple Bot (tbot-get.py)
-- Basic echo functionality
-- Simple command handling
+- Interactive inline buttons menu with navigation
+- Command handling with proper logging
 - Environment variable configuration
+
+### Echo Bot (tbot-echobot.py)
+- Basic echo functionality
+- Simple command handling (/start, /help)
+- Environment variable configuration
+- Proper logging setup
 
 ## Prerequisites
 
-- Python 3.10 or higher
-- python-telegram-bot library (version 13.7)
+- Python 3.12 or higher
+- uv package manager (recommended) or pip
+- python-telegram-bot library (version 20.7 or higher)
 - python-dotenv for environment variable management
 - A Telegram bot token (obtained from [@BotFather](https://t.me/botfather))
 
 ## Installation
 
-1. Ensure you have Python 3.10+ installed on your system
+1. Ensure you have Python 3.12+ installed on your system
 2. Clone this repository:
 ```bash
 git clone https://github.com/yourusername/tbot.git
@@ -33,17 +36,17 @@ cd tbot
 
 3. Create a virtual environment:
 ```bash
-python -m venv .venv
+uv venv
 source .venv/bin/activate  # On Linux/Mac
 # or
 .venv\Scripts\activate.bat  # On Windows
 ```
 
-4. Install the required packages:
+4. Install the required packages using uv (recommended):
 ```bash
-pip install -e .
+uv pip install -e .
 # or manually install dependencies:
-pip install python-telegram-bot==13.7 python-dotenv
+uv pip install python-telegram-bot>=20.7 python-dotenv>=1.0.0
 ```
 
 ## Configuration
@@ -62,9 +65,9 @@ TELEGRAM_BOT_TOKEN=your_token_here
 python tBot.py
 ```
 
-### Simple Bot (tbot-get.py)
+### Echo Bot (tbot-echobot.py)
 ```bash
-python tbot-get.py
+python tbot-echobot.py
 ```
 
 ## Commands
@@ -74,8 +77,9 @@ python tbot-get.py
 - `/whisper` - Deactivates SCREAM mode
 - `/menu` - Shows an interactive menu with inline buttons
 
-### Simple Bot (tbot-get.py)
-- `/start` - Sends a greeting message
+### Echo Bot (tbot-echobot.py)
+- `/start` - Sends a greeting message with user mention
+- `/help` - Sends a help message
 - Any text message will be echoed back
 
 ## Bot Behavior
@@ -85,26 +89,36 @@ python tbot-get.py
 - When in SCREAM mode, the bot will echo your messages in ALL CAPS
 - The `/menu` command displays interactive inline buttons that navigate between two menus
 - The second menu includes a tutorial button that links to the Telegram Bot API documentation
+- All actions are logged to the console
 
-### Simple Bot (tbot-get.py)
+### Echo Bot (tbot-echobot.py)
 - Simple echo functionality for text messages
-- Basic command handling with a start command
+- Basic command handling with start and help commands
 - Uses environment variables for configuration
+- Proper logging setup with reduced httpx noise
+- Greets users with their name when they start the bot
 
 ## Project Structure
 
-- `tBot.py` - Main bot with advanced features
-- `tbot-get.py` - Simple bot with basic functionality
+- `tBot.py` - Main bot with advanced features (scream mode, menus)
+- `tbot-echobot.py` - Simple echo bot with basic functionality
 - `.env` - Environment variables file (contains your bot token)
 - `pyproject.toml` - Project dependencies and metadata
 - `.gitignore` - Files to ignore in git repository
 - `.python-version` - Python version specification
+- `uv.lock` - uv dependency lock file
 
 ## Development
 
 This project contains two different bot implementations:
-1. `tBot.py` - A more feature-rich implementation with advanced features
-2. `tbot-get.py` - A simpler implementation for basic bot functionality
+1. `tBot.py` - A more feature-rich implementation with advanced features like scream mode and interactive menus
+2. `tbot-echobot.py` - A simpler implementation based on the official python-telegram-bot example
+
+Both bots use:
+- Modern async/await syntax
+- Environment variables for configuration
+- Proper logging setup
+- Type hints for better code quality
 
 For larger bots, consider organizing features into separate modules.
 

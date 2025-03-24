@@ -27,26 +27,23 @@ A collection of Telegram bots with basic functionality.
 
 ## Installation
 
-1. Ensure you have Python 3.12+ installed on your system
-2. Clone this repository:
+1. Clone this repository:
 ```bash
 git clone https://github.com/yourusername/tbot.git
 cd tbot
 ```
 
-3. Create a virtual environment:
+2. Enter in a virtual environment:
 ```bash
-uv venv
-source .venv/bin/activate  # On Linux/Mac
-# or
-.venv\Scripts\activate.bat  # On Windows
+source .venv/bin/activate
+
 ```
 
-4. Install the required packages using uv (recommended):
+3. (if required) Install the required packages using uv (recommended):
 ```bash
 uv pip install -e .
 # or manually install dependencies:
-uv pip install python-telegram-bot>=20.7 python-dotenv>=1.0.0
+uv pip install "python-telegram-bot>=20.7" "python-dotenv>=1.0.0"
 ```
 
 ## Configuration

@@ -1,9 +1,10 @@
 [project]
 name = "tBot"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.1.1"
+description = "Telegram bot for my personal use"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "dotenv>=0.9.9",
     "python-telegram-bot==13.7",
 ]

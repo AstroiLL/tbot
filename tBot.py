@@ -65,6 +65,7 @@ def scream(update: Update, context: CallbackContext) -> None:
 
     global screaming
     screaming = True
+    print("Scream mode enabled")
 
 
 def whisper(update: Update, context: CallbackContext) -> None:
@@ -74,6 +75,7 @@ def whisper(update: Update, context: CallbackContext) -> None:
 
     global screaming
     screaming = False
+    print("Scream mode disabled")
 
 
 def menu(update: Update, context: CallbackContext) -> None:
@@ -87,7 +89,7 @@ def menu(update: Update, context: CallbackContext) -> None:
         parse_mode=ParseMode.HTML,
         reply_markup=FIRST_MENU_MARKUP
     )
-
+    print("Menu sent")
 
 def button_tap(update: Update, context: CallbackContext) -> None:
     """
@@ -115,7 +117,7 @@ def button_tap(update: Update, context: CallbackContext) -> None:
         parse_mode=ParseMode.HTML,
         reply_markup=markup
     )
-
+    print(f"Button {data} tapped")
 
 def main() -> None:
     # Get token from environment variable
@@ -134,6 +136,14 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("scream", scream))
     dispatcher.add_handler(CommandHandler("whisper", whisper))
     dispatcher.add_handler(CommandHandler("menu", menu))
+
+    # Set commands in Telegram
+    commands = [
+        ('scream', 'Enable screaming mode'),
+        ('whisper', 'Disable screaming mode'),
+        ('menu', 'Show the menu')
+    ]
+    updater.bot.set_my_commands(commands)
 
     # Register handler for inline buttons
     dispatcher.add_handler(CallbackQueryHandler(button_tap))
